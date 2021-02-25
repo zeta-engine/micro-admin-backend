@@ -1,21 +1,17 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { PlayerSchema } from './interfaces/players/player.schema';
-import { CategorySchema } from './interfaces/categories/category.schema';
+import { CategoriesModule } from './categories/categories.module';
+import { PlayersModule } from './players/players.module';
 
 @Module({
   imports: [
     MongooseModule.forRoot('mongodb://root:root@localhost:27017/sr-admin-backend',
       { authSource: 'admin', useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true, useFindAndModify: false }
     ),
-    MongooseModule.forFeature([
-      { name: 'Category', schema: CategorySchema },
-      { name: 'Player', schema: PlayerSchema }
-    ])
+    CategoriesModule,
+    PlayersModule
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule { }

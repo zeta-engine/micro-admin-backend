@@ -1,17 +1,15 @@
-import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Player } from './interfaces/players/player.interface';
-import { Category } from './interfaces/categories/category.interface';
 import { RpcException } from '@nestjs/microservices';
+import { Category } from './interfaces/category.interface';
 
 @Injectable()
-export class AppService {
-  private logger = new Logger(AppService.name);
+export class CategoriesService {
+  private logger = new Logger(CategoriesService.name);
 
 	constructor(
-    @InjectModel('Category') private readonly categoryModel: Model<Category>, 
-    @InjectModel('Player') private readonly playerModel: Model<Player>) {}
+    @InjectModel('Category') private readonly categoryModel: Model<Category>) {}
 	
 	async createCategory(category: Category): Promise<Category> {
     try {
@@ -33,5 +31,14 @@ export class AppService {
       throw new NotFoundException(`Category ${_id} not found`);
     }
     return foundCategory;
+  }
+
+  async updateCategory(_id: string, category: Category): Promise<void> {
+    try {
+      await this.categoryModel.findOneAndUpdate({_id}, {$set: category}).exec();
+    } catch (error) {
+      this.logger.error(`error: ${JSON.stringify(error.message)}`);
+      throw new RpcException(error.message);
+    }
   }
 }
