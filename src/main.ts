@@ -10,11 +10,10 @@ async function bootstrap() {
     transport: Transport.RMQ,
     options: {
       urls: ['amqp://user:user@0.0.0.0:5672'],
+      noAck: false,
       queue: 'admin-backend',
     },
   });
-
-
 
   await app.listen(() => logger.log('Microservice is listening'));
 }
