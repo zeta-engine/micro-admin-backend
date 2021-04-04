@@ -5,7 +5,7 @@ import { PlayersModule } from './players/players.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://root:root@localhost:27017/sr-admin-backend',
+    MongooseModule.forRoot('mongodb://root:root@mongo:27017/sr-admin-backend',
       { authSource: 'admin', useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true, useFindAndModify: false }
     ),
     CategoriesModule,
