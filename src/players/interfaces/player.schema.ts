@@ -6,4 +6,6 @@ export const PlayerSchema = new mongoose.Schema({
   name: { type: String },
   imageUrl: { type: String },
   ranking: { type: String },
+  category: {type: mongoose.Schema.Types.ObjectId, ref: "Category" },
+
 }, {timestamps: true, collection: 'players'});
