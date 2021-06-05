@@ -1,0 +1,38 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: micro-admin-backend
+  labels:
+    app: micro-admin-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: micro-admin-backend
+  template:
+    metadata:
+      labels:
+        app: micro-admin-backend
+    spec:
+      imagePullSecrets:
+      - name: pipeline-docker-registry
+      containers:
+      - name: micro-admin-backend
+        image: ${CICD_IMAGE}:${CICD_EXECUTION_SEQUENCE}
+        ports:
+        - containerPort: 3000
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: micro-admin-backend
+spec:
+  selector:
+    app: micro-admin-backend
+  type: ClusterIP
+  ports:
+  - name: port3000
+    port: 3000
+    targetPort: 3000
